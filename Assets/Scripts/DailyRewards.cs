@@ -69,7 +69,7 @@ public class DailyRewards : MonoBehaviour
             CachedRewardDate();
 
             //Give Rewards
-            Debug.Log("Rewarded");
+            PlayerPrefs.SetInt("Coins", PlayerPrefs.GetInt("Coins") + rewardDetail[dayTemp].NoOfCoins);
         }
     }
 
