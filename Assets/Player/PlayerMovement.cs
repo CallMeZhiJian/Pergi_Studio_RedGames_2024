@@ -12,6 +12,8 @@ public class PlayerMovement : MonoBehaviour
 
     public TextMeshProUGUI scoreText; // Reference to the UI Text component for displaying the score
     private float score = 0.0f; // Player's score based on distance traveled
+    private int currentScore ;
+    private int highScore ;
 
     private int desiredLane = 1; // 0 = Left, 1 = Middle, 2 = Right
     private Vector3 targetPosition;
@@ -21,13 +23,21 @@ public class PlayerMovement : MonoBehaviour
     public AudioClip swipeSound;
     private AudioSource audioSource;
 
+    public GameObject hud;
+    public GameObject gameOverUI;
+
+    public TextMeshProUGUI highScoreText; // Reference to the UI Text component for displaying the high score
+
     void Start()
     {
         // Ensure score starts at 0
         UpdateScoreText();
-
+        CheckForHighScore();
         // Get the AudioSource component
         audioSource = GetComponent<AudioSource>();
+
+        gameOverUI.SetActive(false);
+        hud.SetActive(true);
     }
 
     void Update()
@@ -36,7 +46,7 @@ public class PlayerMovement : MonoBehaviour
         transform.Translate(Vector3.forward * forwardSpeed * Time.deltaTime);
 
         // Update score based on distance traveled
-        score += forwardSpeed * Time.deltaTime;
+        score += forwardSpeed * 2 * Time.deltaTime;
         UpdateScoreText();
 
         // Detect swipe input
@@ -113,6 +123,40 @@ public class PlayerMovement : MonoBehaviour
 
     void UpdateScoreText()
     {
-        scoreText.text = Mathf.FloorToInt(score * 2).ToString();
+        scoreText.text = Mathf.FloorToInt(score).ToString();
+    }
+
+    public float GetScore()
+    {
+        return score;
+    }
+
+    // Method to get the high score from PlayerPrefs
+    public int GetHighScore()
+    {
+        return PlayerPrefs.GetInt("HighScore", 0);
+    }
+
+    // Method to set a new high score in PlayerPrefs
+    public void SetHighScore(int newHighScore)
+    {
+        PlayerPrefs.SetInt("HighScore", newHighScore);
+    }
+
+    // Call this method when the game is over to update the high score if necessary
+    public void CheckForHighScore()
+    {
+        currentScore = Mathf.FloorToInt(score);
+        highScore = GetHighScore();
+
+        if (currentScore > highScore)
+        {
+            SetHighScore(currentScore);
+            highScoreText.text = currentScore.ToString();
+        }
+        else
+        {
+            highScoreText.text = highScore.ToString();
+        }
     }
 }
