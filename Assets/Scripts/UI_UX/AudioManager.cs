@@ -78,4 +78,19 @@ public class AudioManager : MonoBehaviour
             }
         }
     }
+
+    // Just call this method to play the particular sound effect 
+    //How: AudioManager.instance.PlaySFX(1);
+    public void PlaySFX(int index)
+    {
+        if (index >= 0 && index < sfxAudioSources.Length)
+        {
+            sfxAudioSources[index].Play();
+        }
+        else
+        {
+            Debug.LogWarning("SFX index out of range.");
+        }
+    }
+
 }
