@@ -11,9 +11,14 @@ public class Main_Menu : MonoBehaviour
     public Animator creditsPanelAnimation;
     private bool isCreditOpen = false;
 
+    public Animator transitionAnimation_left;
+    public Animator transitionAnimation_right;
+
     public void LoadLevel()
     {
-        SceneManager.LoadScene("SampledScene");
+        transitionAnimation_left.SetTrigger("Transition");
+        transitionAnimation_right.SetTrigger("Transition");
+        StartCoroutine(LoadLevelWithDelay());
     }
 
     public void OpenSettings()
@@ -26,6 +31,15 @@ public class Main_Menu : MonoBehaviour
     {
         isCreditOpen = !isCreditOpen;
         creditsPanelAnimation.SetBool("OpenCredits", isCreditOpen);
+    }
+
+    private IEnumerator LoadLevelWithDelay()
+    {
+        yield return new WaitForSeconds(2.0f);
+
+        SceneManager.LoadScene("Ervin_Posttesting");
+
+        
     }
 
 }
