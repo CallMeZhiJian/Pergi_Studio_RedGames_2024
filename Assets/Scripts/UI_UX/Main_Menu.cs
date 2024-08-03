@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class Main_Menu : MonoBehaviour
 {
+
     public Animator settingsPanelAnimation;
     private bool isSettingOpen = false;
 
@@ -16,6 +17,7 @@ public class Main_Menu : MonoBehaviour
 
     public void LoadLevel()
     {
+        Audio_MainMenu.instance.PlaySFX(0);
         transitionAnimation_left.SetTrigger("Transition");
         transitionAnimation_right.SetTrigger("Transition");
         StartCoroutine(LoadLevelWithDelay());
@@ -23,12 +25,14 @@ public class Main_Menu : MonoBehaviour
 
     public void OpenSettings()
     {
+        Audio_MainMenu.instance.PlaySFX(0);
         isSettingOpen = !isSettingOpen;
         settingsPanelAnimation.SetBool("OpenSettings", isSettingOpen);
     }
 
     public void OpenCredits()
     {
+        Audio_MainMenu.instance.PlaySFX(0);
         isCreditOpen = !isCreditOpen;
         creditsPanelAnimation.SetBool("OpenCredits", isCreditOpen);
     }
