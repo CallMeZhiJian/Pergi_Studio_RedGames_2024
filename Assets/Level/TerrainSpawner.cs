@@ -4,7 +4,7 @@ public class TerrainSpawner : MonoBehaviour
 {
     public GameObject[] terrainPrefabs; // Array of terrain prefabs to spawn
     public Transform playerTransform; // Reference to the player transform
-    public float spawnDistance = 60.0f; // Distance ahead of the player to spawn new terrain
+    public float spawnDistance = 90.0f; // Distance ahead of the player to spawn new terrain
     public float terrainLength = 20.0f; // Length of each terrain piece
 
     private float nextSpawnZ; // Z position to spawn the next terrain piece
@@ -33,7 +33,7 @@ public class TerrainSpawner : MonoBehaviour
     {
         // Choose a random terrain prefab
         int randomIndex = Random.Range(0, terrainPrefabs.Length);
-        GameObject terrain = Instantiate(terrainPrefabs[randomIndex], new Vector3(0, -3, nextSpawnZ), Quaternion.identity);
+        GameObject terrain = Instantiate(terrainPrefabs[randomIndex], new Vector3(0, -1.45f, nextSpawnZ), Quaternion.identity);
         nextSpawnZ += terrainLength;
     }
 }
