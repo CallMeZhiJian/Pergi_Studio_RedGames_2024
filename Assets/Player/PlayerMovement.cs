@@ -6,21 +6,22 @@ using UnityEngine.UI;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public float laneDistance = 3.0f; // Distance between lanes
-    public float moveSpeed = 10.0f;   // Speed of the player's lateral movement
+    public float laneDistance = 3.0f; 
+    public float moveSpeed = 10.0f;   
     public float forwardSpeed = 5.0f;
 
-    public TextMeshProUGUI scoreText; // Reference to the UI Text component for displaying the score
-    private float score = 0.0f; // Player's score based on distance traveled
+    public TextMeshProUGUI scoreText; 
+    private float score = 0.0f; 
     private int currentScore ;
     private int highScore ;
 
-    private int desiredLane = 1; // 0 = Left, 1 = Middle, 2 = Right
+    private int desiredLane = 1; 
     private Vector3 targetPosition;
     private Vector2 startTouchPosition;
 
     private Vector2 startMousePosition;
     private bool isSwiping = false;
+    public bool canMove;
 
     // Sound effects
     public AudioClip swipeSound;
@@ -28,29 +29,28 @@ public class PlayerMovement : MonoBehaviour
 
     public GameObject hud;
     public GameObject gameOverUI;
-
-    //public TextMeshProUGUI highScoreText; // Reference to the UI Text component for displaying the high score
+    public GameObject fade;
 
     void Start()
     {
-        // Ensure score starts at 0
         UpdateScoreText();
         CheckForHighScore();
-        // Get the AudioSource component
         audioSource = GetComponent<AudioSource>();
+        canMove = false;
 
         gameOverUI.SetActive(false);
         hud.SetActive(true);
+        StartCoroutine(StartingScene());
     }
 
     void Update()
     {
-        // Constant forward movement
-        transform.Translate(Vector3.forward * forwardSpeed * Time.deltaTime);
-
-        // Update score based on distance traveled
-        score += forwardSpeed * 2 * Time.deltaTime;
-        UpdateScoreText();
+        if(canMove)
+        {
+            transform.Translate(Vector3.forward * forwardSpeed * Time.deltaTime);
+            score += forwardSpeed * 2 * Time.deltaTime;
+            UpdateScoreText();
+        }
 
         // Detect swipe input
         if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
@@ -195,5 +195,17 @@ public class PlayerMovement : MonoBehaviour
 
             Destroy(other);
         }
+    }
+
+    IEnumerator StartingScene()
+    {
+        hud.SetActive(false);
+        yield return new WaitForSeconds(7);
+        fade.SetActive(true);
+        yield return new WaitForSeconds(3);
+        hud.SetActive(true);
+        fade.SetActive(false);
+        canMove = true;
+        yield return null;
     }
 }
