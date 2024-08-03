@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
@@ -11,25 +12,25 @@ public class GameManager : MonoBehaviour
 
     private int tilesCount;
 
+    private int coinNum;
+
+    private bool isGameOver;
+
     [Header("UI Properties")]
     [SerializeField] private Image[] tileImages;
+    [SerializeField] private GameObject gameOverPanel;
+    [SerializeField] private TextMeshProUGUI coinText;
 
     private void Awake()
     {
-        if (instance == null)
-        {
-            instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
+        instance = this;
     }
 
     private void Start()
     {
         propsDetails = new List<PropsDetails>();
+
+        isGameOver = false; 
     }
 
     void SortTiles(PropsDetails newDetails)
@@ -62,6 +63,13 @@ public class GameManager : MonoBehaviour
         propsDetails.RemoveAt(t1);
 
         tilesCount = propsDetails.Count;
+
+        coinNum++;
+        
+        if(coinText != null)
+        {
+            coinText.text = coinNum.ToString();
+        }
     }
 
     void CheckMatchingTiles()
@@ -93,10 +101,16 @@ public class GameManager : MonoBehaviour
         if(tilesCount >= 7)
         {
             Debug.Log("GameOver");
+
+            gameOverPanel.SetActive(true);
+
+            isGameOver = true;
+
+            PlayerPrefs.SetInt("Coins", PlayerPrefs.GetInt("Coins") + coinNum);
         }
     }
 
-    public void GetPropsDetails(Details details)
+    public void GetPropsDetails(Details details)    
     {
         PropsDetails newDetails = new PropsDetails();
 
@@ -118,7 +132,6 @@ public class GameManager : MonoBehaviour
 
         
     }
-
 
     void UpdateTileBox()
     {
@@ -142,9 +155,13 @@ public class GameManager : MonoBehaviour
             CheckMatchingTiles();
         }
 
-        UpdateTileBox();
-
         CheckTilesCount();
+
+        if (!isGameOver)
+        {
+            UpdateTileBox();
+        }
+        
     }
 }
 
