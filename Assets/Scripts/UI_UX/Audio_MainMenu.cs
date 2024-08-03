@@ -104,7 +104,7 @@ public class Audio_MainMenu : MonoBehaviour
     }
 
     // Just call this method to play the particular sound effect 
-    //How: AudioManager.instance.PlaySFX(1);
+    //How: Audio_MainMenu.instance.PlaySFX(1);
     public void PlaySFX(int index)
     {
         if (index >= 0 && index < sfxAudioSources.Length)
