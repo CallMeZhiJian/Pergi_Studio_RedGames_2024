@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - SpawnTrigger
+  - Terrain
+  - Obstacle
+  - LevelManager
   layers:
   - Default
   - TransparentFX
