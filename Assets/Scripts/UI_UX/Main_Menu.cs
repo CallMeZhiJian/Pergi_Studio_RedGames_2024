@@ -12,6 +12,9 @@ public class Main_Menu : MonoBehaviour
     public Animator creditsPanelAnimation;
     private bool isCreditOpen = false;
 
+    public Animator dailyPanelAnimation;
+    private bool isDailyOpen = false;
+
     public Animator transitionAnimation_left;
     public Animator transitionAnimation_right;
 
@@ -43,7 +46,13 @@ public class Main_Menu : MonoBehaviour
 
         SceneManager.LoadScene("KW_testing");
 
-        
+    }
+
+    public void OpenDailyPanel()
+    {
+        Audio_MainMenu.instance.PlaySFX(0);
+        isDailyOpen = !isDailyOpen;
+        dailyPanelAnimation.SetBool("OpenDaily", isDailyOpen);
     }
 
 }

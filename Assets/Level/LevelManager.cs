@@ -14,6 +14,12 @@ public class LevelManager : MonoBehaviour
     public GameObject hud; // Reference to the HUD
     private PlayerMovement playerMovement; // Reference to the PlayerMovement script
 
+    public Animator gameOverPanelAnimation;
+    private bool isGameOverPanelOpen = false;
+
+    public Animator transitionAnimation;
+    private bool isPauseOpen = false;
+
     void Start()
     {
         // Find the player GameObject and get the PlayerMovement component
@@ -30,11 +36,16 @@ public class LevelManager : MonoBehaviour
 
     public void GameOver()
     {
+        
+
         // Hide the HUD
         hud.SetActive(false);
 
         // Display the Game Over panel
         gameOverPanel.SetActive(true);
+
+        isGameOverPanelOpen = !isGameOverPanelOpen;
+        gameOverPanelAnimation.SetBool("OpenGameOverPanel", isGameOverPanelOpen);
 
         // Update the score text
         if (playerMovement != null)
@@ -55,11 +66,45 @@ public class LevelManager : MonoBehaviour
     // Function to restart the game, called by the Restart button
     public void RestartGame()
     {
+        Time.timeScale = 1f;
+        Audio_MainMenu.instance.PlaySFX(0);
+        Audio_MainMenu.instance.bgmAudioSource1.Stop();
+        Audio_MainMenu.instance.bgmAudioSource2.Stop();
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     public void ReturnMainMenu()
     {
+        Audio_MainMenu.instance.PlaySFX(0);
         SceneManager.LoadScene("MainMenu");
     }
+
+    public void Pause()
+    {
+        Audio_MainMenu.instance.PlaySFX(0);
+        Audio_MainMenu.instance.bgmAudioSource1.Pause();
+        Audio_MainMenu.instance.bgmAudioSource2.Pause();
+        isPauseOpen = !isPauseOpen;
+        transitionAnimation.SetBool("Transition", isPauseOpen);
+        StartCoroutine(PauseTime());
+    }
+
+    public void Resume()
+    {
+        Audio_MainMenu.instance.PlaySFX(0);
+        Audio_MainMenu.instance.bgmAudioSource1.UnPause();
+        Audio_MainMenu.instance.bgmAudioSource2.UnPause();
+        Time.timeScale = 1f;
+        isPauseOpen = !isPauseOpen;
+        transitionAnimation.SetBool("Transition", isPauseOpen);
+    }
+
+    private IEnumerator PauseTime()
+    {
+        yield return new WaitForSeconds(0.6f);
+
+        Time.timeScale = 0f;
+    }
+
+
 }

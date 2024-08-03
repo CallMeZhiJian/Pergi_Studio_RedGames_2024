@@ -29,7 +29,7 @@ public class PlayerMovement : MonoBehaviour
     public GameObject hud;
     public GameObject gameOverUI;
 
-    public TextMeshProUGUI highScoreText; // Reference to the UI Text component for displaying the high score
+    //public TextMeshProUGUI highScoreText; // Reference to the UI Text component for displaying the high score
 
     void Start()
     {
@@ -178,11 +178,11 @@ public class PlayerMovement : MonoBehaviour
         if (currentScore > highScore)
         {
             SetHighScore(currentScore);
-            highScoreText.text = currentScore.ToString();
+            //highScoreText.text = currentScore.ToString();
         }
         else
         {
-            highScoreText.text = highScore.ToString();
+            //highScoreText.text = highScore.ToString();
         }
     }
 

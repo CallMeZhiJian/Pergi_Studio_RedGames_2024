@@ -55,8 +55,11 @@ public class DailyRewards : MonoBehaviour
 
     public void GetRewards()
     {
+        Audio_MainMenu.instance.PlaySFX(0);
+
         if (rewardDetail[dayTemp].active.activeInHierarchy)
         {
+            
             rewardDetail[dayTemp].active.SetActive(false);
             rewardDetail[dayTemp].checkedIn.SetActive(true);
             rewardDetail[dayTemp].deactive.SetActive(true);

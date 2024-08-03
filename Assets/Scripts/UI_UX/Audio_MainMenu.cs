@@ -63,7 +63,53 @@ public class Audio_MainMenu : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        CheckAndPlayBGMs();
+        Scene currentScene = SceneManager.GetActiveScene();
+
+        if (currentScene.name == "KW_testing")
+        {
+            // Stop main menu BGM if it's playing
+            if (mainMenuBGMAudioSource.isPlaying)
+            {
+                mainMenuBGMAudioSource.Stop();
+            }
+
+            //--
+            if (bgmAudioSource1.isPlaying)
+            {
+                bgmAudioSource1.Stop();
+            }
+            if (bgmAudioSource2.isPlaying)
+            {
+                bgmAudioSource2.Stop();
+            }
+
+            // Play in-game BGMs
+            if (!bgmAudioSource1.isPlaying)
+            {
+                bgmAudioSource1.loop = false;
+                bgmAudioSource1.Play();
+            }
+            if (!bgmAudioSource2.isPlaying)
+            {
+                bgmAudioSource2.loop = true;
+                bgmAudioSource2.Play();
+            }
+        }
+        else
+        {
+            // Play main menu BGM if in a different scene
+            PlayMainMenuBGM();
+
+            // Stop in-game BGMs if they are playing
+            if (bgmAudioSource1.isPlaying)
+            {
+                bgmAudioSource1.Stop();
+            }
+            if (bgmAudioSource2.isPlaying)
+            {
+                bgmAudioSource2.Stop();
+            }
+        }
     }
 
     public void OnBgmSliderValueChanged(float value)
@@ -129,46 +175,46 @@ public class Audio_MainMenu : MonoBehaviour
        
     }
 
-    private void CheckAndPlayBGMs()
-    {
-        Scene currentScene = SceneManager.GetActiveScene();
+    //private void CheckAndPlayBGMs()
+    //{
+    //    Scene currentScene = SceneManager.GetActiveScene();
 
-        if (currentScene.name == "KW_testing")
-        {
-            // Stop main menu BGM if it's playing
-            if (mainMenuBGMAudioSource.isPlaying)
-            {
-                mainMenuBGMAudioSource.Stop();
-            }
+    //    if (currentScene.name == "KW_testing")
+    //    {
+    //        // Stop main menu BGM if it's playing
+    //        if (mainMenuBGMAudioSource.isPlaying)
+    //        {
+    //            mainMenuBGMAudioSource.Stop();
+    //        }
 
-            // Play in-game BGMs
-            if (!bgmAudioSource1.isPlaying)
-            {
-                bgmAudioSource1.loop = false;
-                bgmAudioSource1.Play();
-            }
-            if (!bgmAudioSource2.isPlaying)
-            {
-                bgmAudioSource2.loop = true;
-                bgmAudioSource2.Play();
-            }
-        }
-        else
-        {
-            // Play main menu BGM if in a different scene
-            PlayMainMenuBGM();
+    //        // Play in-game BGMs
+    //        if (!bgmAudioSource1.isPlaying)
+    //        {
+    //            bgmAudioSource1.loop = false;
+    //            bgmAudioSource1.Play();
+    //        }
+    //        if (!bgmAudioSource2.isPlaying)
+    //        {
+    //            bgmAudioSource2.loop = true;
+    //            bgmAudioSource2.Play();
+    //        }
+    //    }
+    //    else
+    //    {
+    //        // Play main menu BGM if in a different scene
+    //        PlayMainMenuBGM();
 
-            // Stop in-game BGMs if they are playing
-            if (bgmAudioSource1.isPlaying)
-            {
-                bgmAudioSource1.Stop();
-            }
-            if (bgmAudioSource2.isPlaying)
-            {
-                bgmAudioSource2.Stop();
-            }
-        }
-    }
+    //        // Stop in-game BGMs if they are playing
+    //        if (bgmAudioSource1.isPlaying)
+    //        {
+    //            bgmAudioSource1.Stop();
+    //        }
+    //        if (bgmAudioSource2.isPlaying)
+    //        {
+    //            bgmAudioSource2.Stop();
+    //        }
+    //    }
+    //}
 
 
 }
