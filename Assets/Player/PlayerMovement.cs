@@ -19,6 +19,9 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 targetPosition;
     private Vector2 startTouchPosition;
 
+    private Vector2 startMousePosition;
+    private bool isSwiping = false;
+
     // Sound effects
     public AudioClip swipeSound;
     private AudioSource audioSource;
@@ -83,6 +86,29 @@ public class PlayerMovement : MonoBehaviour
                     }
                 }
             }
+        }
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            startMousePosition = Input.mousePosition;
+            isSwiping = true;
+        }
+        else if (Input.GetMouseButtonUp(0) && isSwiping)
+        {
+            Vector2 swipeDelta = (Vector2)Input.mousePosition - startMousePosition;
+
+            if (Mathf.Abs(swipeDelta.x) > Mathf.Abs(swipeDelta.y))
+            {
+                if (swipeDelta.x > 0)
+                {
+                    MoveRight();
+                }
+                else
+                {
+                    MoveLeft();
+                }
+            }
+            isSwiping = false;
         }
 
         // Calculate target position
@@ -157,6 +183,17 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             highScoreText.text = highScore.ToString();
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Props"))
+        {
+            Debug.Log("Trigger");
+            GameManager.instance.GetPropsDetails(other.GetComponent<Details>());
+
+            Destroy(other);
         }
     }
 }

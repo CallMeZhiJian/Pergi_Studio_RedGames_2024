@@ -16,9 +16,10 @@ public class GameManager : MonoBehaviour
 
     private bool isGameOver;
 
+    private LevelManager levelManager;
+
     [Header("UI Properties")]
     [SerializeField] private Image[] tileImages;
-    [SerializeField] private GameObject gameOverPanel;
     [SerializeField] private TextMeshProUGUI coinText;
 
     private void Awake()
@@ -28,9 +29,13 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        levelManager = GetComponent<LevelManager>();
+
         propsDetails = new List<PropsDetails>();
 
-        isGameOver = false; 
+        isGameOver = false;
+
+        coinText.text = PlayerPrefs.GetInt("Coins").ToString();
     }
 
     void SortTiles(PropsDetails newDetails)
@@ -64,11 +69,13 @@ public class GameManager : MonoBehaviour
 
         tilesCount = propsDetails.Count;
 
-        coinNum++;
-        
-        if(coinText != null)
+        //coinNum++;
+
+        PlayerPrefs.SetInt("Coins", PlayerPrefs.GetInt("Coins") + 1);
+
+        if (coinText != null)
         {
-            coinText.text = coinNum.ToString();
+            coinText.text = PlayerPrefs.GetInt("Coins").ToString();
         }
     }
 
@@ -100,13 +107,11 @@ public class GameManager : MonoBehaviour
     {
         if(tilesCount >= 7)
         {
-            Debug.Log("GameOver");
-
-            gameOverPanel.SetActive(true);
+            levelManager.GameOver();
 
             isGameOver = true;
 
-            PlayerPrefs.SetInt("Coins", PlayerPrefs.GetInt("Coins") + coinNum);
+            //PlayerPrefs.SetInt("Coins", PlayerPrefs.GetInt("Coins") + coinNum);
         }
     }
 

@@ -133,7 +133,7 @@ public class Audio_MainMenu : MonoBehaviour
     {
         Scene currentScene = SceneManager.GetActiveScene();
 
-        if (currentScene.name == "Ervin_Posttesting")
+        if (currentScene.name == "KW_testing")
         {
             // Stop main menu BGM if it's playing
             if (mainMenuBGMAudioSource.isPlaying)

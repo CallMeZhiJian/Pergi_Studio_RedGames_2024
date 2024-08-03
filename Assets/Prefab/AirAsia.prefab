@@ -12,11 +12,11 @@ GameObject:
   - component: {fileID: 4249685703871849189}
   - component: {fileID: 4249685703871849186}
   - component: {fileID: 4249685703871849187}
-  - component: {fileID: 4249685703871849190}
   - component: {fileID: 4249685703871849191}
+  - component: {fileID: 7607256163041973022}
   m_Layer: 0
   m_Name: AirAsia
-  m_TagString: Obstacle
+  m_TagString: Props
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -100,18 +100,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &4249685703871849190
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4249685703871849184}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e2877938c6c8964ab8d4cfd98ae1614, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!54 &4249685703871849191
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -128,6 +116,21 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &7607256163041973022
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4249685703871849184}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd3efebae9ce79b418d1a21ac40b745d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  propName: AirAsia
+  iD: 1
+  sprite: {fileID: 21300000, guid: 5bc61e43d5584a04bb21d38ecdf61853, type: 3}
 --- !u!1001 &4249685703126964053
 PrefabInstance:
   m_ObjectHideFlags: 0

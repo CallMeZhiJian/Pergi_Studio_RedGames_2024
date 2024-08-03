@@ -10,6 +10,7 @@ public class LevelManager : MonoBehaviour
     public GameObject gameOverPanel; // Reference to the Game Over panel
     public TextMeshProUGUI scoreText; // Reference to the Score Text
     public TextMeshProUGUI highScoreText; // Reference to the High Score Text
+    public TextMeshProUGUI coinText; // Reference to the High Score Text
     public GameObject hud; // Reference to the HUD
     private PlayerMovement playerMovement; // Reference to the PlayerMovement script
 
@@ -41,6 +42,7 @@ public class LevelManager : MonoBehaviour
             scoreText.text = Mathf.FloorToInt(playerMovement.GetScore()).ToString();
             playerMovement.CheckForHighScore();
             highScoreText.text = Mathf.FloorToInt(playerMovement.GetHighScore()).ToString();
+            coinText.text = PlayerPrefs.GetInt("Coins").ToString();
         }
 
         // Stop the player's movement

@@ -41,7 +41,7 @@ public class Main_Menu : MonoBehaviour
     {
         yield return new WaitForSeconds(2.0f);
 
-        SceneManager.LoadScene("Ervin_Posttesting");
+        SceneManager.LoadScene("KW_testing");
 
         
     }
