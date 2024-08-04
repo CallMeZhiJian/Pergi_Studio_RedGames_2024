@@ -107,9 +107,18 @@ public class GameManager : MonoBehaviour
     {
         if(tilesCount >= 7)
         {
-            levelManager.GameOver();
+            if(levelManager.revived)
+            {
+                levelManager.GameOver();
 
-            isGameOver = true;
+                isGameOver = true;
+
+            }
+            else
+            {
+                levelManager.ReviveRequest();
+            }
+            
 
             //PlayerPrefs.SetInt("Coins", PlayerPrefs.GetInt("Coins") + coinNum);
         }
@@ -149,6 +158,17 @@ public class GameManager : MonoBehaviour
         {
             tileImages[i].sprite = null;
         }
+    }
+
+    public void ReviveClearTiles()
+    {
+        propsDetails.RemoveAt(6);
+        propsDetails.RemoveAt(5);
+        propsDetails.RemoveAt(4);
+
+        tilesCount = propsDetails.Count;
+
+        UpdateTileBox();
     }
 
     IEnumerator DelayClearTiles()

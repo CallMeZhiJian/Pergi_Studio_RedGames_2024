@@ -9,6 +9,7 @@ public class PlayerMovement : MonoBehaviour
     public float laneDistance = 3.0f; 
     public float moveSpeed = 10.0f;   
     public float forwardSpeed = 5.0f;
+    public float multiplier;
 
     public TextMeshProUGUI scoreText; 
     private float score = 0.0f; 
@@ -21,6 +22,7 @@ public class PlayerMovement : MonoBehaviour
 
     private Vector2 startMousePosition;
     private bool isSwiping = false;
+    public bool canPlay;
     public bool canMove;
 
     // Sound effects
@@ -33,10 +35,12 @@ public class PlayerMovement : MonoBehaviour
 
     void Start()
     {
+        multiplier = 1.0f;
         UpdateScoreText();
         CheckForHighScore();
         audioSource = GetComponent<AudioSource>();
         canMove = false;
+        canPlay = false;   
 
         gameOverUI.SetActive(false);
         hud.SetActive(true);
@@ -45,34 +49,61 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
+        
         if(canMove)
         {
-            transform.Translate(Vector3.forward * forwardSpeed * Time.deltaTime);
+            multiplier += 0.0005f;
+            transform.Translate(Vector3.forward * forwardSpeed * multiplier * Time.deltaTime);
             score += forwardSpeed * 2 * Time.deltaTime;
             UpdateScoreText();
         }
 
-        // Detect swipe input
-        if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
+        if (canPlay)
         {
-            MoveLeft();
-        }
-        if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
-        {
-            MoveRight();
-        }
-
-        if (Input.touchCount == 1)
-        {
-            Touch touch = Input.GetTouch(0);
-
-            if (touch.phase == TouchPhase.Began)
+            // Detect swipe input
+            if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
             {
-                startTouchPosition = touch.position;
+                MoveLeft();
             }
-            else if (touch.phase == TouchPhase.Ended)
+            if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
             {
-                Vector2 swipeDelta = touch.position - startTouchPosition;
+                MoveRight();
+            }
+
+            if (Input.touchCount == 1)
+            {
+                Touch touch = Input.GetTouch(0);
+
+                if (touch.phase == TouchPhase.Began)
+                {
+                    startTouchPosition = touch.position;
+                }
+                else if (touch.phase == TouchPhase.Ended)
+                {
+                    Vector2 swipeDelta = touch.position - startTouchPosition;
+
+                    if (Mathf.Abs(swipeDelta.x) > Mathf.Abs(swipeDelta.y))
+                    {
+                        if (swipeDelta.x > 0)
+                        {
+                            MoveRight();
+                        }
+                        else
+                        {
+                            MoveLeft();
+                        }
+                    }
+                }
+            }
+
+            if (Input.GetMouseButtonDown(0))
+            {
+                startMousePosition = Input.mousePosition;
+                isSwiping = true;
+            }
+            else if (Input.GetMouseButtonUp(0) && isSwiping)
+            {
+                Vector2 swipeDelta = (Vector2)Input.mousePosition - startMousePosition;
 
                 if (Mathf.Abs(swipeDelta.x) > Mathf.Abs(swipeDelta.y))
                 {
@@ -85,33 +116,10 @@ public class PlayerMovement : MonoBehaviour
                         MoveLeft();
                     }
                 }
+                isSwiping = false;
             }
         }
-
-        if (Input.GetMouseButtonDown(0))
-        {
-            startMousePosition = Input.mousePosition;
-            isSwiping = true;
-        }
-        else if (Input.GetMouseButtonUp(0) && isSwiping)
-        {
-            Vector2 swipeDelta = (Vector2)Input.mousePosition - startMousePosition;
-
-            if (Mathf.Abs(swipeDelta.x) > Mathf.Abs(swipeDelta.y))
-            {
-                if (swipeDelta.x > 0)
-                {
-                    MoveRight();
-                }
-                else
-                {
-                    MoveLeft();
-                }
-            }
-            isSwiping = false;
-        }
-
-        // Calculate target position
+        
         targetPosition = transform.position.z * Vector3.forward;
 
         if (desiredLane == 0)
@@ -123,7 +131,6 @@ public class PlayerMovement : MonoBehaviour
             targetPosition += Vector3.right * laneDistance;
         }
 
-        // Move player smoothly to the target position
         transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * moveSpeed);
     }
 
@@ -169,7 +176,6 @@ public class PlayerMovement : MonoBehaviour
         PlayerPrefs.SetInt("HighScore", newHighScore);
     }
 
-    // Call this method when the game is over to update the high score if necessary
     public void CheckForHighScore()
     {
         currentScore = Mathf.FloorToInt(score);
@@ -178,11 +184,6 @@ public class PlayerMovement : MonoBehaviour
         if (currentScore > highScore)
         {
             SetHighScore(currentScore);
-            //highScoreText.text = currentScore.ToString();
-        }
-        else
-        {
-            //highScoreText.text = highScore.ToString();
         }
     }
 
@@ -207,6 +208,8 @@ public class PlayerMovement : MonoBehaviour
         hud.SetActive(true);
         fade.SetActive(false);
         canMove = true;
+        yield return new WaitForSeconds(1);
+        canPlay = true;
         yield return null;
     }
 }

@@ -7,12 +7,16 @@ using UnityEngine.UI;
 
 public class LevelManager : MonoBehaviour
 {
-    public GameObject gameOverPanel; // Reference to the Game Over panel
-    public TextMeshProUGUI scoreText; // Reference to the Score Text
-    public TextMeshProUGUI highScoreText; // Reference to the High Score Text
-    public TextMeshProUGUI coinText; // Reference to the High Score Text
-    public GameObject hud; // Reference to the HUD
-    private PlayerMovement playerMovement; // Reference to the PlayerMovement script
+    public GameObject gameOverPanel; 
+    public TextMeshProUGUI scoreText; 
+    public TextMeshProUGUI highScoreText; 
+    public TextMeshProUGUI coinText; 
+    public TextMeshProUGUI coinHUDText; 
+    public GameObject hud; 
+    public GameObject revivePanel;
+    private PlayerMovement playerMovement;
+    public int reviveCost = 5;
+    public bool revived;
 
     public Animator gameOverPanelAnimation;
     private bool isGameOverPanelOpen = false;
@@ -22,7 +26,8 @@ public class LevelManager : MonoBehaviour
 
     void Start()
     {
-        // Find the player GameObject and get the PlayerMovement component
+        coinHUDText.text= PlayerPrefs.GetInt("Coins").ToString();
+        revived = false;   
         GameObject player = GameObject.FindWithTag("Player");
         if (player != null)
         {
@@ -34,20 +39,56 @@ public class LevelManager : MonoBehaviour
         }
     }
 
+    public void ReviveRequest()
+    {
+        playerMovement.canMove = false;
+        playerMovement.canPlay = false;
+        if (PlayerPrefs.GetInt("Coins") >= reviveCost)
+        {
+            Debug.Log("RequestRevive");
+            hud.SetActive(false);
+            revivePanel.SetActive(true);
+        }
+        else 
+        { 
+            GameOver(); 
+        }
+    }
+
+    public void Revive()
+    {
+        if (PlayerPrefs.GetInt("Coins") >= reviveCost)
+        {
+            PlayerPrefs.SetInt("Coins", PlayerPrefs.GetInt("Coins") -5);
+            coinText.text = PlayerPrefs.GetInt("Coins").ToString();
+            coinHUDText.text = PlayerPrefs.GetInt("Coins").ToString();
+
+            playerMovement.canMove = true;
+            playerMovement.canPlay = true;
+            hud.SetActive(true);
+            revivePanel.SetActive(false);
+
+            revived = true;
+
+            GameManager.instance.ReviveClearTiles();
+        }
+        else
+        {
+            GameOver();
+            Debug.Log("GameOver");
+        }
+    }
+
     public void GameOver()
     {
-        
-
-        // Hide the HUD
         hud.SetActive(false);
-
+        revivePanel.SetActive(false);
         // Display the Game Over panel
         gameOverPanel.SetActive(true);
 
         isGameOverPanelOpen = !isGameOverPanelOpen;
         gameOverPanelAnimation.SetBool("OpenGameOverPanel", isGameOverPanelOpen);
 
-        // Update the score text
         if (playerMovement != null)
         {
             scoreText.text = Mathf.FloorToInt(playerMovement.GetScore()).ToString();
@@ -56,14 +97,12 @@ public class LevelManager : MonoBehaviour
             coinText.text = PlayerPrefs.GetInt("Coins").ToString();
         }
 
-        // Stop the player's movement
         if (playerMovement != null)
         {
             playerMovement.enabled = false;
         }
     }
 
-    // Function to restart the game, called by the Restart button
     public void RestartGame()
     {
         Time.timeScale = 1f;
