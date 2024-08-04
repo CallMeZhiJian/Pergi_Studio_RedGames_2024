@@ -18,6 +18,11 @@ public class Main_Menu : MonoBehaviour
     public Animator transitionAnimation_left;
     public Animator transitionAnimation_right;
 
+    private void Start()
+    {
+        OpenDailyPanel();
+    }
+
     public void LoadLevel()
     {
         Audio_MainMenu.instance.PlaySFX(0);

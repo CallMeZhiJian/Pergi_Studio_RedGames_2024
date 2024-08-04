@@ -32,6 +32,7 @@ public class PlayerMovement : MonoBehaviour
     public GameObject hud;
     public GameObject gameOverUI;
     public GameObject fade;
+    public GameObject tutorial;
 
     void Start()
     {
@@ -204,10 +205,12 @@ public class PlayerMovement : MonoBehaviour
         hud.SetActive(false);
         yield return new WaitForSeconds(7);
         fade.SetActive(true);
+        tutorial.SetActive(true);
         yield return new WaitForSeconds(3);
         hud.SetActive(true);
         fade.SetActive(false);
         canMove = true;
+        tutorial.SetActive(false);
         yield return new WaitForSeconds(1);
         canPlay = true;
         yield return null;

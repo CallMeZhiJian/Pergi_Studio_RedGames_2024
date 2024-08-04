@@ -12,6 +12,8 @@ public class DailyRewards : MonoBehaviour
 
     private int dayTemp;
 
+    [SerializeField] private TextMeshProUGUI coinText;
+
     private void Start()
     {     
         ChangeRewardIcon();
@@ -21,6 +23,8 @@ public class DailyRewards : MonoBehaviour
         CheckIfNextDay();
 
         UpdateDailyRewards();
+
+        coinText.text = PlayerPrefs.GetInt("Coins").ToString();
     }
 
     private void ChangeRewardIcon()
@@ -70,6 +74,8 @@ public class DailyRewards : MonoBehaviour
 
             //Give Rewards
             PlayerPrefs.SetInt("Coins", PlayerPrefs.GetInt("Coins") + rewardDetail[dayTemp].NoOfCoins);
+
+            coinText.text = PlayerPrefs.GetInt("Coins").ToString();
         }
     }
 
