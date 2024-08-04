@@ -190,6 +190,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (other.CompareTag("Props"))
         {
+            Audio_MainMenu.instance.PlaySFX(1);
             Debug.Log("Trigger");
             GameManager.instance.GetPropsDetails(other.GetComponent<Details>());
 

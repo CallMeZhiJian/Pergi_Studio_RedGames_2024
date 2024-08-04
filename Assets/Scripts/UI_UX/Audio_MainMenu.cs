@@ -12,6 +12,10 @@ public class Audio_MainMenu : MonoBehaviour
     public AudioSource bgmAudioSource1; // Reference to the 1st in-game BGM AudioSource
     public AudioSource bgmAudioSource2; // Reference to the 2nd in-game BGM AudioSource
     public AudioSource[] sfxAudioSources; // References to all SFX AudioSources
+    //0 -> button click
+    //1 -> collect item
+    //2 -> increase coins
+    //3 -> press shop
 
     public Slider bgmSlider; // Reference to the BGM volume slider
     public Slider sfxSlider; // Reference to the SFX volume slider
