@@ -106,5 +106,16 @@ public class LevelManager : MonoBehaviour
         Time.timeScale = 0f;
     }
 
+    public void BacktoMenu()
+    {
+        Audio_MainMenu.instance.PlaySFX(0);
+        Audio_MainMenu.instance.bgmAudioSource1.Stop();
+        Audio_MainMenu.instance.bgmAudioSource2.Stop();
+        Time.timeScale = 1f;
+        isPauseOpen = !isPauseOpen;
+        transitionAnimation.SetBool("Transition", isPauseOpen);
+        SceneManager.LoadScene("MainMenu");
+    }
+
 
 }
